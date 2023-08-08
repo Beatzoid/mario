@@ -1,0 +1,35 @@
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: Java & Gradle CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # test against the latest update of each major Java version, as well as specific updates of LTS versions:
+        java: [ 8, 11, 17, 20 ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+
+    name: Test Repository on ${{ matrix.os }} with Java ${{ matrix.java }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Java
+        uses: actions/setup-java@v3.6.0
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: "zulu"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
