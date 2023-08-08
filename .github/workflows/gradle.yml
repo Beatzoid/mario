@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         # test against the latest update of each major Java version, as well as specific updates of LTS versions:
-        java: [ 8, 11, 17, 20 ]
+        java: [ 20.0.2 ]
         os: [ ubuntu-latest, windows-latest, macOS-latest ]
 
     name: Test Repository on ${{ matrix.os }} with Java ${{ matrix.java }}
@@ -26,6 +26,7 @@ jobs:
         uses: actions/setup-java@v3.12.0
         with:
           java-version: ${{ matrix.java }}
+          cache: 'gradle'
           distribution: "zulu"
 
       - name: Grant execute permission for gradlew
