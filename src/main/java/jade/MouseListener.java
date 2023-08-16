@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * Handles all mouse-related events in the engine
+ * Singleton
  */
 public class MouseListener {
     private static MouseListener instance;
@@ -28,6 +29,9 @@ public class MouseListener {
         this.lastY = 0;
     }
 
+    /**
+     * Get the current mouse listener instance
+     */
     public static MouseListener get() {
         if (MouseListener.instance == null ) {
             MouseListener.instance = new MouseListener();
@@ -36,6 +40,12 @@ public class MouseListener {
         return MouseListener.instance;
     }
 
+    /**
+     * Called when the mouse position updates
+     * @param window The current window
+     * @param xPos The new xPos of the mouse
+     * @param yPos The new yPos of the mouse
+     */
     public static void mousePosCallback(long window, double xPos, double yPos) {
         // Save the previous X and Y before changing them
         get().lastX = get().xPos;
@@ -55,7 +65,11 @@ public class MouseListener {
     }
 
     /**
-     * @param modifiers Modifiers are any buttons that are pressed in addition to the mouse button
+     * Called when a mouse button is pressed
+     * @param window The current window
+     * @param button The button that was pressed
+     * @param action Pressed vs released
+     * @param modifiers Any button that was pressed in addition to the mouse button (cmd, control, shift, etc.)
      */
     public static void mouseButtonCallback(long window, int button, int action, int modifiers) {
         if (action == GLFW_PRESS) {
@@ -71,19 +85,21 @@ public class MouseListener {
         }
     }
 
+    /**
+     * Called when the mouse is scrolled
+     * @param window The current window
+     * @param xOffset The amount scrolled in the X axis
+     * @param yOffset The amount scrolled in the Y axis
+     */
     public static void mouseScrollCallback(long window, double xOffset, double yOffset) {
         get().scrollX = xOffset;
         get().scrollY = yOffset;
     }
 
-    public static void endFrame() {
-        get().scrollX = 0;
-        get().scrollY = 0;
-
-        get().lastX = get().xPos;
-        get().lastY = get().yPos;
-    }
-
+    /**
+     * Returns whether the provided button is down
+     * @param button The button to check
+     */
     public static boolean isMouseButtonDown(int button) {
         if (button < get().mouseButtonPressed.length) {
             return get().mouseButtonPressed[button];
@@ -92,32 +108,62 @@ public class MouseListener {
         }
     }
 
+    /**
+     * Get the current X position of the mouse
+     */
     public static float getX() {
         return (float)get().xPos;
     }
 
+    /**
+     * Get the current Y position of the mouse
+     */
     public static float getY() {
         return (float)get().yPos;
     }
 
+    /**
+     * Get the difference between the last mouse X position and the current mouse X position
+     */
     public static float getDx() {
         return (float)(get().lastX - get().xPos);
     }
 
+    /**
+     * Get the difference between the last mouse X position and the current mouse X position
+     */
     public static float getDy() {
         return (float)(get().lastY - get().yPos);
     }
 
+    /**
+     * Get the amount the mouse has been scrolled in the X axis
+     */
     public static float getScrollX() {
         return (float)get().scrollX;
     }
 
-
+    /**
+     * Get the amount the mouse has been scrolled in the Y axis
+     */
     public static float getScrollY() {
         return (float)get().scrollY;
     }
 
+    /**
+     * Get whether the mouse is being dragged
+     */
     public static boolean isDragging() {
         return get().isDragging;
     }
+
+    /*
+      public static void endFrame() {
+              get().scrollX = 0;
+              get().scrollY = 0;
+
+              get().lastX = get().xPos;
+              get().lastY = get().yPos;
+          }
+     */
 }

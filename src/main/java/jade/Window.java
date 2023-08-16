@@ -10,9 +10,8 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
- * Manages the windows in the engine.
- * This is a Singleton to prevent multiple instances from being created
- * and interfering with each other
+ * Manages the main Window in the engine.
+ * Singleton
  */
 public class Window {
     private static Window window = null;

@@ -9,10 +9,11 @@ public class KeyListener {
     // the number of keys on the users keyboard
     private boolean keyPressed[] = new boolean[GLFW_KEY_LAST + 1];
 
-    private KeyListener() {
+    private KeyListener() { }
 
-    }
-
+    /**
+     * Get the current KeyListener instance
+     */
     public static KeyListener get() {
         if (KeyListener.instance == null) {
             KeyListener.instance = new KeyListener();
@@ -22,8 +23,12 @@ public class KeyListener {
     }
 
     /**
+     * Called when a key is pressed
+     * @param window The current window
+     * @param key The key that was pressed
+     * @param scanCode A unique, platform-specific code for every key
      * @param action Whether the key was pressed or released
-     * @param modifiers Modifiers are any buttons that are pressed in addition to the mouse button
+     * @param modifiers Any key that was pressed in addition to the passed key (control, cmd, shift, etc.)
      */
     public static void keyCallback(long window, int key, int scanCode, int action, int modifiers) {
         if (action == GLFW_PRESS) {
@@ -33,6 +38,10 @@ public class KeyListener {
         }
     }
 
+    /**
+     * Get whether the provided key is pressed
+     * @param keyCode The key to check
+     */
     public static boolean isKeyPressed(int keyCode) {
         return get().keyPressed[keyCode];
     }
