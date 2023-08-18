@@ -1,5 +1,7 @@
 package jade;
 
+import jade.scenes.LevelEditorScene;
+import jade.scenes.LevelScene;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -21,10 +23,33 @@ public class Window {
 
     private long glfwWindow;
 
+    private static Scene currentScene;
+
+    public float r, g, b, a;
+
     private Window() {
         this.width = 1920;
         this.height = 1080;
         this.title = "Mario";
+
+        this.r = 1.0f;
+        this.g = 1.0f;
+        this.b = 1.0f;
+        this.a = 1.0f;
+    }
+
+    public static void changeScene(int newScene) {
+        switch (newScene) {
+            case 0:
+                currentScene = new LevelEditorScene();
+                break;
+            case 1:
+                currentScene = new LevelScene();
+                break;
+            default:
+                assert false : "Unknown scene '" + newScene + "'";
+                break;
+        }
     }
 
     /**
@@ -92,22 +117,39 @@ public class Window {
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
         GL.createCapabilities();
+
+        Window.changeScene(0);
     }
 
     /**
      * Main window loop
      */
     public void loop() {
+        double beginTime = glfwGetTime();
+        double endTime;
+        double dt = -1.0;
+
         while (!glfwWindowShouldClose(glfwWindow)) {
             // Poll events
             glfwPollEvents();
 
             // RGBA
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            glClearColor(r, g, b, a);
             // Clear the screen with the color above
             glClear(GL_COLOR_BUFFER_BIT);
 
+            if (dt >= 0) {
+                currentScene.update(dt);
+            }
+
             glfwSwapBuffers(glfwWindow);
+
+            // Record the current time
+            endTime = glfwGetTime();
+            // Calculate the delta time (how long the frame took to render)
+            dt = endTime - beginTime;
+            // Reset the frame begin time
+            beginTime = endTime;
         }
     }
 
