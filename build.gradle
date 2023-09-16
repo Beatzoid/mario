@@ -11,7 +11,7 @@ java {
 group = 'me.beatzoid'
 version = '1.0-SNAPSHOT'
 
-project.ext.lwjglVersion = "3.3.2"
+project.ext.lwjglVersion = "3.3.3"
 project.ext.jomlVersion = "1.10.5"
 
 // set LWJGL natives based on current operating system
